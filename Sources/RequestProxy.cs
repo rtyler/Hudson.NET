@@ -40,15 +40,44 @@ namespace Hudson.Internal
 		#region "Public Methods"
 		public string Execute(string endpoint)
 		{
-			HttpWebRequest request = WebRequest.Create(String.Format("http://{0}:{1}/{2}", 
-						this.hostName, this.hostPort, endpoint)) as HttpWebRequest;
-
-			using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
+			HttpWebRequest request = null;
+			HttpWebResponse response = null;
+			StreamReader reader = null;
+			
+			try
 			{
-				StreamReader reader = new StreamReader(response.GetResponseStream());
+				request = WebRequest.Create(String.Format("http://{0}:{1}/{2}", 
+							this.hostName, this.hostPort, endpoint)) as HttpWebRequest;
+				request.UserAgent = "Hudson.NET";
+				// Use a small timeout
+				request.Timeout = 20 * 1000;
 
-				return reader.ReadToEnd();
+				using (response = request.GetResponse() as HttpWebResponse)
+				{
+					if ( (!request.HaveResponse) && (response != null) )
+					{
+						return null;
+					}
+
+					reader = new StreamReader(response.GetResponseStream());
+
+					return reader.ReadToEnd();
+				}
 			}
+			catch (WebException exc)
+			{
+				if (exc == null)
+				{
+					return null;
+				}
+
+				using (HttpWebResponse errorResponse = exc.Response as HttpWebResponse)
+				{
+					Console.WriteLine("The server returned \"{0}\", status {1} ({1:d})",
+							errorResponse.StatusDescription, errorResponse.StatusCode);
+				}
+			}
+			return null;
 		}
 		#endregion
 	}
