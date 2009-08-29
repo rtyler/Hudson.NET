@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+
+<project name="Hudosn.NET" default="library" basedir=".">
+	<property name="debug" value="true" overwrite="false" />
+    <property name="project.name" value="Hudson.NET"/>
+	<property name="project.version" value="1.0.0"/>
+    <property name="library" value="Hudson.dll"/>
+	<property name="test_library" value="Hudson.Tests.dll"/>
+	<tstamp property="build.date" pattern="yyyyMMdd" verbose="true" />
+	
+	<!-- These are being defined for posterity's sake, as they may change in the future -->
+	<property name="sourcedir" value="Sources"/>
+	<property name="testsdir" value="Tests"/>
+	<property name="outputdir" value="Bin"/>
+
+	<target name="library" description="Build the Hudson.NET DLL">
+		<echo message="Building ${project.name}-${project.version}"/>
+
+		<mkdir dir="${outputdir}"/>
+
+		<csc target="library" 
+				output="${outputdir}/${library}"
+				verbose="true"
+			>
+			<sources>
+				<include name="${sourcedir}/**.cs"/>
+			</sources>
+			<references>
+				<include name="System.Web.dll"/>
+				<include name="System.Web.Extensions.dll"/>
+			</references>
+		</csc>
+	</target>
+
+	<target name="clean" description="Clean up">
+		<echo message="Cleaning ${project.name}"/>
+		<delete dir="${outputdir}"/>
+	</target>
+
+	<target name="test" description="Run NUnit tests" depends="library">
+		<csc target="library"
+				output="${outputdir}/${test_library}"
+				verbose="true"
+			>
+			<sources>
+				<include name="Tests/**.cs"/>
+			</sources>
+			<references>
+				<include name="./${outputdir}/${library}"/>
+
+				<include name="System.Web.dll"/>
+				<include name="System.Web.Extensions.dll"/>
+
+				<include name="nunit.core.dll"/>
+				<include name="nunit.framework.dll"/>
+			</references>
+		</csc>
+
+		<echo message="Running NUnit tests"/>
+		<exec program="nunit-console2" commandline="-labels ${site_dir}/bin/${test_library}"/>
+	</target>
+</project>
+
