@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Text;
@@ -17,10 +18,17 @@ namespace Hudson.Internal
 		#region "Member Variables"
 		protected string hostName = null;
 		protected int hostPort = 8080;
+
+		protected JavaScriptSerializer json = null;
 		#endregion
 	
 		#region "Public Constructors"
-		public RequestProxy(string host, int port)
+		public RequestProxy()
+		{
+			this.json = new JavaScriptSerializer();
+		}
+
+		public RequestProxy(string host, int port) : this()
 		{
 			/*
 			 * If our host string is bollocks, or if the port is not a valid 
@@ -38,7 +46,7 @@ namespace Hudson.Internal
 		#endregion
 
 		#region "Public Methods"
-		public string Execute(string endpoint)
+		public Dictionary<string, object> Execute(string endpoint)
 		{
 			HttpWebRequest request = null;
 			HttpWebResponse response = null;
@@ -60,8 +68,8 @@ namespace Hudson.Internal
 					}
 
 					reader = new StreamReader(response.GetResponseStream());
-
-					return reader.ReadToEnd();
+					return this.json.DeserializeObject(reader.ReadToEnd()) as 
+							Dictionary<string, object>;
 				}
 			}
 			catch (WebException exc)

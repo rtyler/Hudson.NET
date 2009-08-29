@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 using NUnit.Framework;
 
@@ -13,7 +14,11 @@ namespace Hudson.Tests
 		public void BaseJSONAPI()
 		{
 			RequestProxy req = new RequestProxy("localhost", 8888);
-			Console.WriteLine(req.Execute("/api/json"));
+			Dictionary<string, object> response = req.Execute("/api/json");
+
+			Assert.IsNotNull(response);
+			Assert.IsTrue(response.ContainsKey("views"));
+			Assert.IsTrue(response.ContainsKey("jobs"));
 		}	
 	}
 }
