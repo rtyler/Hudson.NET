@@ -28,13 +28,16 @@ namespace Hudson.Tests.JobTests
 		}
 
 		[Test]
-		public void DisplayName()
+		public void CommonAttributes()
 		{
 			Job job = this.json.Deserialize<Job>(this.sampleFreestyle);
+
 			Assert.AreEqual("SimpleFreestyle", job.DisplayName, "Invalid DisplayName");
+			Assert.AreEqual("SimpleFreestyle", job.Name, "Invalid Name");
+
+			Assert.IsNotNull(job.LastBuild, "LastBuild should not be null");
+			Assert.AreEqual(3, job.LastBuild.Number, "LastBuild should be #3");
 		}
-
 	}
-
 }
 

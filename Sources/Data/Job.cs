@@ -4,6 +4,29 @@ using System.Web.Script.Serialization;
 
 namespace Hudson.Data
 {
+	[Serializable]
+	public class Build
+	{
+		#region "Member Variables"
+		protected int number = 0;
+		protected string url = null;
+		#endregion
+
+		#region "Properties"
+		public int Number
+		{
+			get { return this.number; }
+			set { this.number = value; }
+		}
+		
+		public string Url
+		{
+			get { return this.url; }
+			set { this.url = value; }
+		}
+		#endregion
+	}
+
 	/*
 	 * Hudson.Data.Job - Serializable version of the Hudson Job JSON
 	 *
@@ -61,11 +84,12 @@ namespace Hudson.Data
 
 		protected bool inQueue = false;
 		protected bool keepDependencies = false;
-		protected int lastBuild = 0;
-		protected int lastCompletedBuild = 0;
-		protected int lastFailedBuild = 0;
-		protected int lastStableBuild = 0;
-		protected int lastSuccessfulBuild = 0;
+
+		protected Build lastBuild = null;
+		protected Build lastCompletedBuild = null;
+		protected Build lastFailedBuild = null; 
+		protected Build lastStableBuild = null;
+		protected Build lastSuccessfulBuild = null;
 		protected int nextBuildNumber = 0;
 
 		#endregion	
@@ -132,31 +156,31 @@ namespace Hudson.Data
 			set { this.keepDependencies = value; }
 		}
 
-		public int LastBuild
+		public Build LastBuild
 		{
 			get { return this.lastBuild; }
 			set { this.lastBuild = value; }
 		}
 
-		public int LastCompletedBuild
+		public Build LastCompletedBuild
 		{
 			get { return this.lastCompletedBuild; }
 			set { this.lastCompletedBuild = value; }
 		}
 
-		public int LastFailedBuild
+		public Build LastFailedBuild
 		{
 			get { return this.lastFailedBuild; }
 			set { this.lastFailedBuild = value; }
 		}
 
-		public int LastStableBuild
+		public Build LastStableBuild
 		{
 			get { return this.lastStableBuild; }
 			set { this.lastStableBuild = value; }
 		}
 
-		public int LastSuccessfulBuild
+		public Build LastSuccessfulBuild
 		{
 			get { return this.lastSuccessfulBuild; }
 			set { this.lastSuccessfulBuild = value; }
