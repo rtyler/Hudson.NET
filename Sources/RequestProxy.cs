@@ -35,7 +35,7 @@ namespace Hudson.Internal
 			 * If our host string is bollocks, or if the port is not a valid 
 			 * int for a port, we should raise an InvalidRequestException
 			 */
-			if ( (String.IsNullOrEmpty(host)) || ( (port == 0) || (port > 65535) ) )
+			if ( (String.IsNullOrEmpty(host)) || ( (port <= 0) || (port > 65535) ) )
 			{
 				throw new InvalidRequestException(
 					String.Format("Invalid arguments for RequestProxy()! (host: {0}, port: {1})", 
