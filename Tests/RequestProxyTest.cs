@@ -11,7 +11,28 @@ namespace Hudson.Tests
 	public class RequestProxyTest
 	{
 		[Test]
-		public void BaseJSONAPI()
+		[ExpectedException(typeof(InvalidRequestException))]
+		public void ZeroPortRequestProxy()
+		{
+			RequestProxy req = new RequestProxy("localhost", 0);
+		}
+
+		[Test]
+		[ExpectedException(typeof(InvalidRequestException))]
+		public void MinusOnePortRequestProxy()
+		{
+			RequestProxy req = new RequestProxy("localhost", -1);
+		}
+
+		[Test]
+		[ExpectedException(typeof(InvalidRequestException))]
+		public void OversizedPortRequestProxy()
+		{
+			RequestProxy req = new RequestProxy("localhost", 65536);
+		}
+
+		[Test]
+		public void ExecuteSimpleRequest()
 		{
 			RequestProxy req = new RequestProxy("localhost", 8888);
 
