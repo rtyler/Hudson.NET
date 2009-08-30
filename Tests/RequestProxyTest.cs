@@ -14,9 +14,13 @@ namespace Hudson.Tests
 		public void BaseJSONAPI()
 		{
 			RequestProxy req = new RequestProxy("localhost", 8888);
+
+			Assert.IsNotNull(req);
+
 			Dictionary<string, object> response = req.Execute("/api/json");
 
 			Assert.IsNotNull(response);
+
 			Assert.IsTrue(response.ContainsKey("views"));
 			Assert.IsTrue(response.ContainsKey("jobs"));
 		}	

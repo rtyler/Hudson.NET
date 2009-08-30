@@ -64,7 +64,7 @@ namespace Hudson.Internal
 			HttpWebRequest request = null;
 			HttpWebResponse response = null;
 			StreamReader reader = null;
-			
+
 			try
 			{
 				request = WebRequest.Create(String.Format("{0}://{1}:{2}/{3}", 
@@ -74,9 +74,14 @@ namespace Hudson.Internal
 				// Use a small timeout
 				request.Timeout = 20 * 1000;
 
+				if (request == null)
+				{
+					return null;
+				}
+
 				using (response = request.GetResponse() as HttpWebResponse)
 				{
-					if ( (!request.HaveResponse) && (response != null) )
+					if ( (response == null) || (!request.HaveResponse) )
 					{
 						return null;
 					}
@@ -95,7 +100,12 @@ namespace Hudson.Internal
 
 				using (HttpWebResponse errorResponse = exc.Response as HttpWebResponse)
 				{
-					Console.WriteLine("The server returned \"{0}\", status {1} ({1:d})",
+					if (errorResponse == null)
+					{
+						Console.WriteLine("Failed to get any response?");
+						return null;
+					}
+					Console.WriteLine("The server returned \"{0}\", status {1}",
 							errorResponse.StatusDescription, errorResponse.StatusCode);
 				}
 			}
