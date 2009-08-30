@@ -31,6 +31,20 @@ namespace Hudson.Tests.RequestProxyTests
 		{
 			RequestProxy req = new RequestProxy("localhost", 65536);
 		}
+
+		[Test]
+		[ExpectedException(typeof(InvalidRequestException))]
+		public void BadHostNameRequestProxy()
+		{
+			RequestProxy req = new RequestProxy("");
+		}
+
+		[Test]
+		public void DefaultPortRequestProxy()
+		{
+			RequestProxy req = new RequestProxy("localhost");
+			Assert.AreEqual(8080, req.Port, "Default port should be 8080");
+		}
 	}
 
 	[TestFixture]

@@ -17,7 +17,8 @@ namespace Hudson.Internal
 	{
 		#region "Member Variables"
 		protected string hostName = null;
-		protected int hostPort = 8080;
+		public readonly int defaultPort = 8080;
+		protected int hostPort = 0;
 		public bool useSSL = false;
 
 		protected JavaScriptSerializer json = null;
@@ -27,23 +28,27 @@ namespace Hudson.Internal
 		public RequestProxy()
 		{
 			this.json = new JavaScriptSerializer();
+			this.hostPort = this.defaultPort;
 		}
 
-		public RequestProxy(string host, int port) : this()
+		public RequestProxy(string host) : this()
 		{
-			/*
-			 * If our host string is bollocks, or if the port is not a valid 
-			 * int for a port, we should raise an InvalidRequestException
-			 */
-			if ( (String.IsNullOrEmpty(host)) || ( (port <= 0) || (port > 65535) ) )
+			if (String.IsNullOrEmpty(host)) 
 			{
-				throw new InvalidRequestException(
-					String.Format("Invalid arguments for RequestProxy()! (host: {0}, port: {1})", 
-								host, port));
+				throw new InvalidRequestException("Invalid host argument to constructor");
 			}
 			this.hostName = host;
+		}
+
+		public RequestProxy(string host, int port) : this(host)
+		{
+			if ( (port <= 0) || (port > 65535) )
+			{
+				throw new InvalidRequestException("Invalid port number to constructor");
+			}
 			this.hostPort = port;
 		}
+
 		#endregion
 
 		#region "Properties"
@@ -54,6 +59,13 @@ namespace Hudson.Internal
 				if (this.useSSL)
 					return "https";
 				return "http";
+			}
+		}
+		public int Port
+		{
+			get
+			{
+				return this.hostPort;
 			}
 		}
 		#endregion 
