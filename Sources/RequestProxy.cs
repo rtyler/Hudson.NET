@@ -102,8 +102,12 @@ namespace Hudson.Internal
 				{
 					if (errorResponse == null)
 					{
-						Console.WriteLine("Failed to get any response?");
-						return null;
+						/*
+						 * If we don't have an error response, that means we likely
+						 * have a SocketException from the underlying layer, and we 
+						 * should likely propogate that up
+						 */
+						throw;
 					}
 					Console.WriteLine("The server returned \"{0}\", status {1}",
 							errorResponse.StatusDescription, errorResponse.StatusCode);

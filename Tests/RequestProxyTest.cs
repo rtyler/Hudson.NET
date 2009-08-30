@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Net;
 
 using NUnit.Framework;
 
@@ -61,6 +62,21 @@ namespace Hudson.Tests.RequestProxyTests
 	public class ExecuteTests
 	{
 		[Test]
+		public void ExecuteToDownServer()
+		{
+			try
+			{
+				// I'm hoping 9080 isn't actually listening...
+				RequestProxy req = new RequestProxy("localhost", 9080);
+			}
+			catch (WebException exc)
+			{
+				Assert.IsInstanceOfType(typeof(System.Net.Sockets.SocketException), 
+						exc.InnerException, 
+						"We should have a SocketException as an InnerException");
+			}
+		}
+
 		public void ExecuteSimpleRequest()
 		{
 			RequestProxy req = new RequestProxy("localhost", 8888);
