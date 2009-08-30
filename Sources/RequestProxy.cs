@@ -18,6 +18,7 @@ namespace Hudson.Internal
 		#region "Member Variables"
 		protected string hostName = null;
 		protected int hostPort = 8080;
+		protected bool useSSL = false;
 
 		protected JavaScriptSerializer json = null;
 		#endregion
@@ -45,6 +46,18 @@ namespace Hudson.Internal
 		}
 		#endregion
 
+		#region "Properties"
+		public string ProtocolPrefix
+		{
+			get
+			{
+				if (this.useSSL)
+					return "https";
+				return "http";
+			}
+		}
+		#endregion 
+
 		#region "Public Methods"
 		public Dictionary<string, object> Execute(string endpoint)
 		{
@@ -54,8 +67,9 @@ namespace Hudson.Internal
 			
 			try
 			{
-				request = WebRequest.Create(String.Format("http://{0}:{1}/{2}", 
-							this.hostName, this.hostPort, endpoint)) as HttpWebRequest;
+				request = WebRequest.Create(String.Format("{0}://{1}:{2}/{3}", 
+							this.ProtocolPrefix, this.hostName, 
+							this.hostPort, endpoint)) as HttpWebRequest;
 				request.UserAgent = "Hudson.NET";
 				// Use a small timeout
 				request.Timeout = 20 * 1000;
