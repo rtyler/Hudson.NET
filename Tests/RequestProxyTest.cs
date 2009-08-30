@@ -5,10 +5,10 @@ using NUnit.Framework;
 
 using Hudson.Internal;
 
-namespace Hudson.Tests
+namespace Hudson.Tests.RequestProxyTests
 {
 	[TestFixture]
-	public class RequestProxyTest
+	public class ConstructorsTests
 	{
 		[Test]
 		[ExpectedException(typeof(InvalidRequestException))]
@@ -30,7 +30,36 @@ namespace Hudson.Tests
 		{
 			RequestProxy req = new RequestProxy("localhost", 65536);
 		}
+	}
 
+	[TestFixture]
+	public class PropertiesTests
+	{
+		private RequestProxy req = null;
+		[SetUp]
+		public void SetUp()
+		{
+			this.req = new RequestProxy("localhost", 8080);
+		}
+
+		[Test]
+		public void ProtocolPrefixSSL()
+		{
+			this.req.useSSL = true;
+			Assert.AreEqual("https", this.req.ProtocolPrefix, "Invalid prefix");
+		}
+
+		[Test]
+		public void ProtocolPrefixNoSSL()
+		{
+			this.req.useSSL = false;
+			Assert.AreEqual("http", this.req.ProtocolPrefix, "Invalid prefix");
+		}
+	}
+
+	[TestFixture]
+	public class ExecuteTests
+	{
 		[Test]
 		public void ExecuteSimpleRequest()
 		{

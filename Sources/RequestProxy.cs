@@ -18,7 +18,7 @@ namespace Hudson.Internal
 		#region "Member Variables"
 		protected string hostName = null;
 		protected int hostPort = 8080;
-		protected bool useSSL = false;
+		public bool useSSL = false;
 
 		protected JavaScriptSerializer json = null;
 		#endregion
