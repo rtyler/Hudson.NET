@@ -91,9 +91,10 @@ namespace Hudson.Tests.RequestProxyTests
 			}
 		}
 
+		[Test]
 		public void ExecuteSimpleRequest()
 		{
-			RequestProxy req = new RequestProxy("localhost", 8888);
+			RequestProxy req = new RequestProxy("localhost");
 
 			Assert.IsNotNull(req, "RequestProxy object is null");
 

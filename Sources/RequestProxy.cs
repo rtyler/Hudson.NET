@@ -5,6 +5,8 @@ using System.Net;
 using System.Text;
 using System.Web.Script.Serialization;
 
+using Hudson;
+
 namespace Hudson.Internal
 {
 	public class InvalidRequestException : Exception
