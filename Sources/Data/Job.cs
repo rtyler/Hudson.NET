@@ -69,6 +69,9 @@ namespace Hudson.Data
 		protected Build lastStableBuild = null;
 		protected Build lastSuccessfulBuild = null;
 		protected int nextBuildNumber = 0;
+
+		protected List<Project> downstreamProjects = null;
+		protected List<Project> upstreamProjects = null;
 		#endregion
 
 		#region "Properties"
@@ -172,6 +175,18 @@ namespace Hudson.Data
 		{
 			get { return this.nextBuildNumber; }
 			set { this.nextBuildNumber = value; }
+		}
+
+		public List<Project> DownstreamProjects
+		{
+			get { return this.downstreamProjects; }
+			set { this.downstreamProjects = value; }
+		}
+		
+		public List<Project> UpstreamProjects
+		{
+			get { return this.upstreamProjects; }
+			set { this.upstreamProjects = value; }
 		}
 		#endregion
 
