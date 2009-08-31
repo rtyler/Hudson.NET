@@ -44,6 +44,8 @@ namespace Hudson.Tests.JobTests
 
 			Assert.IsNotNull(job.HealthReport, "HealthReport is null");
 			Assert.AreEqual(1, job.HealthReport.Count, "HealthReport doesn't have 1 element");
+
+			Assert.AreEqual("blue", job.Color, "Incorrect color");
 		}
 	}
 }

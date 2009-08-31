@@ -69,8 +69,7 @@ namespace Hudson.Data
 		protected Build lastStableBuild = null;
 		protected Build lastSuccessfulBuild = null;
 		protected int nextBuildNumber = 0;
-
-		#endregion	
+		#endregion
 
 		#region "Properties"
 		public string Description
