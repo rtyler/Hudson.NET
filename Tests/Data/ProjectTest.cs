@@ -16,7 +16,7 @@ namespace Hudson.Tests.ProjectTests
 		[Test]
 		public void BasicDeserialization()
 		{
-			Project project = this.job.Deserialize<Project>(this.sampleDownstream);
+			Project project = this.json.Deserialize<Project>(this.sampleDownstream);
 			Assert.IsNotNull(project, "Deserialized Project object is null");
 		}
 	}
