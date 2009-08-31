@@ -38,6 +38,12 @@ namespace Hudson.Tests.JobTests
 			Assert.IsNotNull(job.LastBuild, "LastBuild should not be null");
 			Assert.AreEqual(3, job.LastBuild.Number, "LastBuild should be #3");
 			Assert.AreEqual(4, job.NextBuildNumber, "NextBuildNumber should be 4");
+
+			Assert.IsNotNull(job.Builds, "Builds should not be null");
+			Assert.AreEqual(3, job.Builds.Count, "We should 3 elements in our Builds");
+
+			Assert.IsNotNull(job.HealthReport, "HealthReport is null");
+			Assert.AreEqual(1, job.HealthReport.Count, "HealthReport doesn't have 1 element");
 		}
 	}
 }

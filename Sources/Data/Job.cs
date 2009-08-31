@@ -55,9 +55,10 @@ namespace Hudson.Data
 		protected string name = null;
 		protected string url = null;
 		protected bool buildable = false;
-		
+		protected List<Build> builds = null;
 		protected string color = null;
-		protected int firstBuild = 0;
+		protected Build firstBuild = null;
+		protected List<HealthReport> healthReport = null;
 
 		protected bool inQueue = false;
 		protected bool keepDependencies = false;
@@ -72,13 +73,6 @@ namespace Hudson.Data
 		#endregion	
 
 		#region "Properties"
-		/*
-		[DataMember(Name="actions")]
-		public List<string> Actions
-		{
-		}
-		*/
-
 		public string Description
 		{
 			get { return this.description; }
@@ -109,16 +103,28 @@ namespace Hudson.Data
 			set { this.buildable = value; }
 		}
 
+		public List<Build> Builds
+		{
+			get { return this.builds; }
+			set { this.builds = value; }
+		}
+
 		public string Color
 		{
 			get { return this.color; }
 			set { this.color = value; }
 		}
 
-		public int FirstBuild 
+		public Build FirstBuild 
 		{
 			get { return this.firstBuild; }
 			set { this.firstBuild = value; }
+		}
+
+		public List<HealthReport> HealthReport
+		{
+			get { return this.healthReport; } 
+			set { this.healthReport = value; }
 		}
 
 		public bool InQueue 
