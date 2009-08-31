@@ -17,7 +17,7 @@ namespace Hudson.Tests.JobTests
 		[SetUp]
 		public void SetUp()
 		{
-			this.json = new JavaScriptSerializer();			
+			this.json = new JavaScriptSerializer();
 		}
 
 		[Test]
@@ -37,6 +37,7 @@ namespace Hudson.Tests.JobTests
 
 			Assert.IsNotNull(job.LastBuild, "LastBuild should not be null");
 			Assert.AreEqual(3, job.LastBuild.Number, "LastBuild should be #3");
+			Assert.AreEqual(4, job.NextBuildNumber, "NextBuildNumber should be 4");
 		}
 	}
 }
