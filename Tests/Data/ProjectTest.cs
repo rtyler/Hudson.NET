@@ -19,5 +19,14 @@ namespace Hudson.Tests.ProjectTests
 			Project project = this.json.Deserialize<Project>(this.sampleDownstream);
 			Assert.IsNotNull(project, "Deserialized Project object is null");
 		}
+
+		[Test]
+		public void VerifyMembers()
+		{
+			Project project = this.json.Deserialize<Project>(this.sampleDownstream);
+
+			Assert.AreEqual("Downstream", project.Name, "Project.Name is wrong");
+			Assert.AreEqual("grey", project.Color, "Project.Color is wrong");
+		}
 	}
 }
