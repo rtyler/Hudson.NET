@@ -105,5 +105,15 @@ namespace Hudson.Tests.RequestProxyTests
 			Assert.IsTrue(response.ContainsKey("views"), "Response doesn't contain a 'views'");
 			Assert.IsTrue(response.ContainsKey("jobs"), "Response doesn't contain 'jobs'");
 		}	
+
+		[Test]
+		public void GenericsExecuteJobTest()
+		{
+			RequestProxy req = new RequestProxy("localhost");
+			Assert.IsNotNull(req, "RequestProxy object is null");
+				
+			Hudson.Data.Job job = req.Execute<Hudson.Data.Job>("/api/json");
+			Assert.IsNotNull(job);
+		}
 	}
 }

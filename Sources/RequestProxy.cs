@@ -30,6 +30,7 @@ namespace Hudson.Internal
 		public RequestProxy()
 		{
 			this.json = new JavaScriptSerializer();
+			this.hostName = "localhost";
 			this.hostPort = this.defaultPort;
 		}
 
@@ -72,8 +73,7 @@ namespace Hudson.Internal
 		}
 		#endregion 
 
-		#region "Public Methods"
-		public Dictionary<string, object> Execute(string endpoint)
+		internal string FetchJson(string endpoint)
 		{
 			HttpWebRequest request = null;
 			HttpWebResponse response = null;
@@ -101,8 +101,7 @@ namespace Hudson.Internal
 					}
 
 					reader = new StreamReader(response.GetResponseStream());
-					return this.json.DeserializeObject(reader.ReadToEnd()) as 
-							Dictionary<string, object>;
+					return reader.ReadToEnd();
 				}
 			}
 			catch (WebException exc)
@@ -128,6 +127,31 @@ namespace Hudson.Internal
 				}
 			}
 			return null;
+		}
+
+		#region "Public Methods"
+		public T Execute<T>(string endpoint)
+		{
+			string result = this.FetchJson(endpoint);
+
+			if (String.IsNullOrEmpty(result))
+			{
+				return default(T);
+			}	
+
+			return this.json.Deserialize<T>(result);
+		}
+
+		public Dictionary<string, object> Execute(string endpoint)
+		{
+			string result = this.FetchJson(endpoint);
+			
+			if (String.IsNullOrEmpty(result))
+			{
+				return null;
+			}
+
+			return this.json.DeserializeObject(result) as Dictionary<string, object>;
 		}
 		#endregion
 	}
