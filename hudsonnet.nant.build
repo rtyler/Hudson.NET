@@ -37,7 +37,7 @@
 		<delete dir="${outputdir}"/>
 	</target>
 
-	<target name="test" description="Run NUnit tests" depends="library">
+	<target name="build-tests" description="Build the tests DLL" depends="library">
 		<csc target="library"
 				output="${outputdir}/${test_library}"
 				verbose="true"
@@ -56,8 +56,12 @@
 			</references>
 		</csc>
 
+	</target>
+
+	<target name="test" description="Run NUnit tests">
 		<echo message="Running NUnit tests"/>
-		<exec program="nunit-console2" commandline="-labels ${outputdir}/${test_library}"/>
+		<exec program="nunit-console2" commandline="-labels ${outputdir}/${test_library}"
+				failonerror="false"/>
 	</target>
 </project>
 
