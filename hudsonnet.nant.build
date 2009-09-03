@@ -58,7 +58,7 @@
 
 	</target>
 
-	<target name="test" description="Run NUnit tests">
+	<target name="test" description="Run NUnit tests" depends="build-tests">
 		<echo message="Running NUnit tests"/>
 		<exec program="nunit-console2" commandline="-labels ${outputdir}/${test_library}"
 				failonerror="false"/>
