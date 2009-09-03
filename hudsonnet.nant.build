@@ -63,5 +63,22 @@
 		<exec program="nunit-console2" commandline="-labels ${outputdir}/${test_library}"
 				failonerror="false"/>
 	</target>
+
+	<target name="samples" description="Build Hudson.NET samples" depends="library">
+		<echo message="Building the Hudson.NET samples applications"/>
+
+		<call target="sample-interactivecli"/>
+	</target>
+
+	<target name="sample-interactivecli" description="Build the interactive CLI sample">
+		<csc target="exe" output="${outputdir}/InteractiveCLI.exe" verbose="true">
+			<sources>
+				<include name="Samples/InteractiveCLI.cs"/>
+			</sources>
+			<references>
+				<include name="./${outputdir}/${library}"/>
+			</references>
+		</csc>
+	</target>
 </project>
 
