@@ -15,17 +15,17 @@ namespace Hudson.Samples
 			Api api = new Api();
 
 			Console.WriteLine("Pinging your Hudson instance...");
-			List<Project> projects = api.FetchProjects();
+			List<Job> jobs = api.FetchJobs();
 
-			if ( (projects == null) || (projects.Count == 0) )
+			if ( (jobs == null) || (jobs.Count == 0) )
 			{
 				Console.WriteLine("Looks like Hudson is empty :(");
 				return;
 			}
 
-			foreach (Project proj in projects) 
+			foreach (Job job in jobs)
 			{
-				Console.WriteLine("  {0}\t{1}", proj.Name, proj.Color);
+				Console.WriteLine("  {0}\t{1}", job.Color, job.DisplayName);
 			}
 		}
 	}
