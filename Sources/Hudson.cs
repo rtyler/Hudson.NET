@@ -24,8 +24,8 @@ namespace Hudson
 		}
 		#endregion
 
-		#region "Synchronous Methods"
-		public List<Hudson.Data.Project> FetchProjects()
+		#region "Internal Synchronous Methods"
+		internal Hudson.Data.Root FetchRootData()
 		{
 			Hudson.Data.Root root = this.requestProxy.Execute<Hudson.Data.Root>("/api/json");
 
@@ -35,10 +35,59 @@ namespace Hudson
 				 * TODO: Raise a pertinent exception
 				 */
 				Console.WriteLine("root is null");
+			}
+
+			return root;
+		}
+		#endregion
+
+		#region "Synchronous Methods"
+		public List<Hudson.Data.Project> FetchProjects()
+		{
+			Hudson.Data.Root root = this.FetchRootData();
+
+			if (root == null)
+			{
 				return null;
 			}
 
 			return root.Jobs;
+		}
+
+		public List<Hudson.Data.Job> FetchJobs()
+		{
+			Hudson.Data.Root root = this.FetchRootData();
+
+			if (root == null)
+			{
+				return null;
+			}
+
+			if (root.Jobs.Count == 0)
+			{
+				return new List<Hudson.Data.Job>();
+			}
+
+			List<Hudson.Data.Job> jobs = new List<Hudson.Data.Job>();
+			foreach (Hudson.Data.Project project in root.Jobs) 
+			{
+				Hudson.Data.Job job = this.FetchJob(project.Name);
+				if (job == null)
+					continue;
+
+				jobs.Add(job);
+			}
+			return jobs;	
+		}
+
+		public Hudson.Data.Job FetchJob(string jobName)
+		{
+			if (String.IsNullOrEmpty(jobName))
+			{
+				return null;
+			}
+			string endpoint = String.Format("/job/{0}/api/json", jobName);
+			return this.requestProxy.Execute<Hudson.Data.Job>(endpoint);
 		}
 		#endregion
 	}
