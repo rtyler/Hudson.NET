@@ -98,6 +98,28 @@ namespace Hudson
 			string endpoint = String.Format("/job/{0}/api/json", jobName);
 			return this.requestProxy.Execute<Hudson.Data.Job>(endpoint);
 		}
+
+		public Hudson.Data.View FetchView(string viewName)
+		{
+			if (String.IsNullOrEmpty(viewName))
+			{
+				return null;
+			}
+			string endpoint = String.Format("/view/{0}/api/json", viewName);
+			return this.requestProxy.Execute<Hudson.Data.View>(endpoint);
+
+		}
+
+		public List<Hudson.Data.View> FetchViews()
+		{
+			Hudson.Data.Root root = this.FetchRootData();
+			
+			if (root == null)
+			{
+				return null;
+			}
+			return root.Views;
+		}
 		#endregion
 	}
 

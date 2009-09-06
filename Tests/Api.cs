@@ -133,4 +133,37 @@ namespace Hudson.Tests
 			Assert.IsNull(job, "FetchJob() should have returned null");
 		}
 	}
+
+	[TestFixture]
+	public class FetchViewTests : ApiBase
+	{
+		[SetUp]
+		public virtual void SetUp()
+		{
+			Dictionary<string, string> testData = new Dictionary<string, string>();
+			testData.Add("/api/json", "{\"assignedLabels\":[{}],\"mode\":\"NORMAL\",\"nodeDescription\":\"the master Hudson node\",\"nodeName\":\"\",\"numExecutors\":2,\"description\":null,\"jobs\":[{\"name\":\"Downstream\",\"url\":\"http://localhost:8080/job/Downstream/\",\"color\":\"blue\"},{\"name\":\"Hudson.NET\",\"url\":\"http://localhost:8080/job/Hudson.NET/\",\"color\":\"blue\"},{\"name\":\"Sleeper\",\"url\":\"http://localhost:8080/job/Sleeper/\",\"color\":\"blue\"}],\"primaryView\":{\"name\":\"All\",\"url\":\"http://localhost:8080/\"},\"slaveAgentPort\":0,\"useCrumbs\":false,\"useSecurity\":false,\"views\":[{\"name\":\"All\",\"url\":\"http://localhost:8080/\"},{\"name\":\"TestView\",\"url\":\"http://localhost:8080/view/TestView/\"}]}");
+			testData.Add("/view/TestView/api/json", "{\"description\":\"This is a secondary view\",\"jobs\":[{\"name\":\"Downstream\",\"url\":\"http://localhost:8080/job/Downstream/\",\"color\":\"blue\"},{\"name\":\"Sleeper\",\"url\":\"http://localhost:8080/job/Sleeper/\",\"color\":\"blue\"}],\"name\":\"TestView\",\"url\":\"http://localhost:8080/view/TestView/\"}");	
+
+			this.requestProxy = new Hudson.Tests.MockRequestProxy(testData);
+			this.api = new Api(this.requestProxy);
+		}
+
+		[Test]
+		public void SynchronousFetchView()
+		{
+			View view = this.api.FetchView("TestView");
+
+			Assert.IsNotNull(view);
+			Assert.IsNotNull(view.Description);
+		}
+
+		[Test]
+		public void SynchronousFetchViews()
+		{
+			List<View> views = this.api.FetchViews();
+
+			Assert.IsNotNull(views);
+			Assert.AreEqual(2, views.Count);
+		}
+	}
 }
