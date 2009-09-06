@@ -82,5 +82,15 @@
 			</references>
 		</csc>
 	</target>
+
+	<target name="doc" description="Generate the NDoc documentation for Hudson.NET" 
+			depends="library">
+		
+		<echo message="Building the NDoc documentation"/>
+
+		<exec program="ndoc" 
+				commandline="${build.dir}/${project.library},${project.codedocs} -documenter=MSDN"
+				failonerror="true"/>
+	</target>
 </project>
 
