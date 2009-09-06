@@ -13,6 +13,7 @@ namespace Hudson.Data
 		protected string nodeDescription = null;
 		protected int numExecutors = 0;
 		protected string description = null;
+		protected List<View> views = null;
 		#endregion
 
 		#region "Public Properties"
@@ -44,6 +45,12 @@ namespace Hudson.Data
 		{
 			get { return this.description; }
 			set { this.description = value; }
+		}
+
+		public List<View> Views
+		{
+			get { return this.views; }
+			set { this.views = value; }
 		}
 		#endregion
 	}
