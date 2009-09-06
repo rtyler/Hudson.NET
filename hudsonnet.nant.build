@@ -22,7 +22,7 @@
 		<csc target="library" 
 				output="${build.dir}/${project.library}"
 				verbose="true"
-				doc="${project.codedocs}" >
+				doc="${build.dir}/${project.codedocs}" >
 			<sources>
 				<include name="${project.dir}/**.cs"/>
 			</sources>
