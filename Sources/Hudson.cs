@@ -6,7 +6,7 @@ namespace Hudson
 	public class Api
 	{
 		#region "Member Variables"
-		protected Hudson.Internal.RequestProxy requestProxy = null;
+		protected Hudson.Internal.IRequestProxy requestProxy = null;
 		#endregion
 
 		#region "Properties"
@@ -21,6 +21,15 @@ namespace Hudson
 		public Api(string host, int port)
 		{
 			this.requestProxy = new Hudson.Internal.RequestProxy(host, port);
+		}
+
+		public Api(Hudson.Internal.IRequestProxy rp)
+		{
+			if (rp == null)
+			{
+				throw new Exception("You cannot pass a null RequestProxy object to me");
+			}
+			this.requestProxy = rp;
 		}
 		#endregion
 

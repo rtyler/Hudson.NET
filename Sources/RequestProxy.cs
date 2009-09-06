@@ -15,13 +15,27 @@ namespace Hudson.Internal
 		public InvalidRequestException(string message) : base(message) {}
 	}
 
-	public class RequestProxy
+	public interface IRequestProxy
+	{
+		#region "Public Properties"
+		string ProtocolPrefix { get; }
+		int Port { get; }
+		bool useSSL { get; set; }
+		#endregion
+
+		#region "Public Methods"
+		T Execute<T>(string endPoint);
+		Dictionary<string, object> Execute(string endPoint);
+		#endregion
+	}
+
+	public class RequestProxy : IRequestProxy
 	{
 		#region "Member Variables"
 		protected string hostName = null;
 		public readonly int defaultPort = 8080;
 		protected int hostPort = 0;
-		public bool useSSL = false;
+		protected bool shouldUseSSL = false;
 
 		protected JavaScriptSerializer json = null;
 		#endregion
@@ -70,6 +84,12 @@ namespace Hudson.Internal
 			{
 				return this.hostPort;
 			}
+		}
+
+		public bool useSSL
+		{
+			get { return this.shouldUseSSL; }
+			set { this.shouldUseSSL = value; }
 		}
 		#endregion 
 
