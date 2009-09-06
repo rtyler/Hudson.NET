@@ -9,6 +9,7 @@
 	<property name="project.dir" value="Sources"/>
 	<property name="project.version" value="1.0.0"/>
     <property name="project.library" value="Hudson.dll"/>
+	<property name="project.codedocs" value="Hudson.dll.xml" />
 	<property name="project.test_library" value="Hudson.Tests.dll"/>
 	
 	<property name="testsdir" value="Tests"/>
@@ -21,8 +22,7 @@
 		<csc target="library" 
 				output="${build.dir}/${project.library}"
 				verbose="true"
-				doc="Hudson.xml"
-			>
+				doc="${project.codedocs}" >
 			<sources>
 				<include name="${project.dir}/**.cs"/>
 			</sources>
